@@ -17,7 +17,8 @@
     (is (= (two-split-on-left "test--test--test" "--")
            [ "test" "--test--test" ]))
     (is (= (two-split-on-left "test--test-test" "-")
-           [ "test" "--test-test" ]))))
+           [ "test" "--test-test" ]))
+    ))
 
 (deftest two-split-on-right-test
   (testing "two-split-on-right"
@@ -34,7 +35,8 @@
     (is (= (two-split-on-right "test--test--test" "--")
            [ "test--" "test--test" ]))
     (is (= (two-split-on-right "test--test-test" "-")
-           [ "test-" "-test-test" ]))))
+           [ "test-" "-test-test" ]))
+    ))
 
 (deftest three-split-test
   (testing "three-split"
@@ -47,4 +49,5 @@
     (is (= (three-split "test #( #(test) )# test" "#(" ")#")
            [ "test " "#( #(test) )#" " test" ]))
     (is (= (three-split "test #(test test" "#(" ")#")
-           [ "test " "#(test test" "" ]))))
+           [ "test " "#(test test" "" ]))
+    ))
