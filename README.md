@@ -46,3 +46,21 @@ You can use ```##( ... )##``` to implicitely wrap the contents in a ```print``` 
 
 If you want to not have clerb process ```#( ... )#``` or ```##( ... )##``` patterns as clojure statements, prefix them
 with a backslash: ```\#( ... )#``` or ```\##( ... )##```
+
+Current Status/Limitations
+--------------------------
+
+clerb is currently in a state of development. At the moment the two core functions are done... ish. They work for most
+cases. Cases where they don't work:
+
+* The string or file ends in ```)#``` or ```)##```. I know this seems arbitrary, it has to do with how I'm doing the matching and limitations to ```subs```.
+* The template contains ```)#``` as part of it's text (for instance: ```#( print ")#" )#```). I'm not sure how this could be fixed, but I'm not very experienced with these things.
+
+In addition the actual stand-alone executable hasn't been set up yet. I'm still working on that part.
+
+Contributing
+------------
+
+Please please please contribute. This is amateur stuff I've done, I need help. Show me the way. If you have questions my email is in my profile,
+if you have changes I'm pretty sure I have pull requests set to send me an email notification. Either way, please do it! My only request is that you
+keep the tests section up-to-date, everything else is fair-game.
