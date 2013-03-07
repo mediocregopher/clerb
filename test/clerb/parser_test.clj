@@ -67,12 +67,19 @@
                [ { :type :raw :text "test" } { :type :normal :text "#(test)#" } ]))
         ))
 
+(deftest code-format-test
+    (testing "code-format"
+        (is (= (code-format (wrap-string "test")) (wrap-string "test")))
+        (is (= (code-format (wrap-string "#(test)#")) {:type :normal :text "(test)"}))
+        (is (= (code-format (wrap-string "##(test)##")) {:type :in-place :text "(test)"}))
+        ))
+
 (deftest to-string-wrappers-test
     (testing "to-string-wrappers"
         (is (= (to-string-wrappers "test") (list (wrap-string "test"))))
         (is (= (to-string-wrappers "test #(test)# test")
                                    (list (wrap-string "test ")
-                                         (wrap-string "#(test)#")
+                                         {:type :normal :text "(test)"}
                                          (wrap-string " test"))))
         (is (= (to-string-wrappers "test\\#(test)# test")
                                    (list (wrap-string "test")

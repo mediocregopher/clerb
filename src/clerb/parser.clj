@@ -98,6 +98,21 @@
          (map #(let [[curr _] %] curr))
          (drop 2)))
 
+(defn code-format
+    "Removes #'s from code wrappers in string-wrapper"
+    [string-wrapper]
+    (let [strtext (string-wrapper :text)
+          strtype (string-wrapper :type)]
+        (case strtype
+            :raw string-wrapper
+            :normal   (assoc string-wrapper :text (-> strtext
+                                                    (-easy-subs 0 (- (count strtext) 1))
+                                                    (-easy-subs 1 (count strtext))))
+            :in-place (assoc string-wrapper :text (-> strtext
+                                                    (-easy-subs 0 (- (count strtext) 2))
+                                                    (-easy-subs 2 (count strtext)))))))
+
+
 (defn to-string-wrappers
     "Given a full string, splits it, wraps the splitted strings, and handles all escaping,
     returning a seq of string-wrappers"
@@ -105,4 +120,5 @@
     (->> string
         (both-del-split)
         (map wrap-string)
-        (escape-all)))
+        (escape-all)
+        (map code-format)))
