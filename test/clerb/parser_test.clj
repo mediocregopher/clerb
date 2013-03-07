@@ -40,3 +40,14 @@
         (is (= (-easy-subs "01234" -4 2) "12"))
         (is (= (-easy-subs "01234" -1 4) "4"))
         ))
+
+(deftest string-type-test
+    (testing "string-type"
+        (is (= (string-type "##(blah)##") :in-place))
+        (is (= (string-type "##(blah")    :raw))
+        (is (= (string-type "blah)##")    :raw))
+        (is (= (string-type "#(blah)#")   :normal))
+        (is (= (string-type "#(blah")     :raw))
+        (is (= (string-type "blah)#")     :raw))
+        (is (= (string-type "blah")       :raw))
+        ))

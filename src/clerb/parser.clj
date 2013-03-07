@@ -47,13 +47,14 @@
                    (del-split %)))
          (flatten)))
 
-;(defn string-type
-;    "Returns :in-place, :normal, or :raw depending on what the given string looks like"
-;    [string]
-;    (cond (and (= "##(" (-easy-subs string 0 3))
-;               (= ")##" (-easy-subs :in-place
-;          (= "#("  (-easy-subs string 0 2)) :normal
-;                                            :raw))
+(defn string-type
+    "Returns :in-place, :normal, or :raw depending on what the given string looks like"
+    [string]
+    (cond (and (= "##(" (-easy-subs string  0 3))
+               (= ")##" (-easy-subs string -3 3))) :in-place
+          (and (= "#("  (-easy-subs string  0 2))
+               (= ")#"  (-easy-subs string -2 2))) :normal
+          :else :raw))
 
 ;(defn escapes-next?
 ;    "Given a string wrapper, returns if it escapes the next string-wrapper in the seq"
