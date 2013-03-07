@@ -28,13 +28,15 @@
         (flatten (-del-split string "#(" ")#"))))
 
 (defn -easy-subs
-    "Because subs freaks out if you give it a range larger than the size of the string"
+    "Because subs freaks out if you give it a range larger than the size of the string, and doesn't
+    work the way every other substring function in the rest of the freakin world. Accepts negative
+    indices"
     [string beg len]
-    (if (< (+ beg len) (count string))
-        (if (> 0 beg)
-            (subs string (+ beg (count string)) (+ beg (count string) len))
-            (subs string beg (+ beg len)))
-        string))
+    (let [strcnt (count string)
+          start (if (neg? beg) (+ strcnt beg) beg)
+          endtmp (+ start len)
+          end (if (> endtmp strcnt) strcnt endtmp)]
+        (subs string start end)))
 
 (defn both-del-split
     "Splits a string on both ##( and #( using in-place-del-split and del-split"
