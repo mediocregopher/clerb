@@ -56,7 +56,32 @@
                (= ")#"  (-easy-subs string -2 2))) :normal
           :else :raw))
 
-;(defn escapes-next?
-;    "Given a string wrapper, returns if it escapes the next string-wrapper in the seq"
-;    [string-wrapper]
-;    (
+(defn wrap-string
+    "Given a string, wraps it into a string wrapper"
+    [string]
+    { :type (string-type string)
+      :text string })
+
+(defn escapes-next?
+    "Given a string wrapper, returns if it escapes the next string-wrapper in the seq"
+    [string-wrapper]
+    (and (= (string-wrapper :type) :raw)
+         (= (-easy-subs (string-wrapper :text) -1 1) "\\")))
+
+(defn remove-escape
+    "Given a string wrapper removes the backslash from the end. Assumes there is one"
+    [string-wrapper]
+    (let [oldtext (string-wrapper :text)]
+        (assoc string-wrapper :text
+            (-easy-subs oldtext 0 (dec (count oldtext))))))
+
+(defn try-escape
+    "Given two string-wrappers, returns a vector of the same two, except if the first
+    escapes the second it has that backslash removed and the second one becomes a raw
+    type. If the second is already a raw immediately return"
+    [string-wrapper-a string-wrapper-b]
+    (if (= :raw (string-wrapper-b :type)) [string-wrapper-a string-wrapper-b]
+        (if (escapes-next? string-wrapper-a)
+            [ (remove-escape string-wrapper-a)
+              (assoc string-wrapper-b :type :raw) ]
+            [ string-wrapper-a string-wrapper-b ])))

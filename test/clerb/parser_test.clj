@@ -51,3 +51,18 @@
         (is (= (string-type "blah)#")     :raw))
         (is (= (string-type "blah")       :raw))
         ))
+
+(deftest remove-escape-test
+    (testing "remove-escape"
+        (is (= (remove-escape (wrap-string "test\\")) (wrap-string "test")))
+        ))
+
+(deftest try-escape-test
+    (testing "try-escape"
+        (is (= (try-escape (wrap-string "test\\") (wrap-string "test\\"))
+               [ { :type :raw :text "test\\" } { :type :raw :text "test\\" } ]))
+        (is (= (try-escape (wrap-string "test\\") (wrap-string "#(test)#"))
+               [ { :type :raw :text "test" } { :type :raw :text "#(test)#" }]))
+        (is (= (try-escape (wrap-string "test") (wrap-string "#(test)#"))
+               [ { :type :raw :text "test" } { :type :normal :text "#(test)#" } ]))
+        ))
