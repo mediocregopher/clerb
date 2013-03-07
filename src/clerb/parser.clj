@@ -85,3 +85,24 @@
             [ (remove-escape string-wrapper-a)
               (assoc string-wrapper-b :type :raw) ]
             [ string-wrapper-a string-wrapper-b ])))
+
+(defn escape-all
+    "Given a seq of string-wrappers returns another seq with all escapes properly handled"
+    [string-wrappers]
+    (->> (concat string-wrappers (list (wrap-string "")))
+         (reductions
+            (fn [prev-pair curr]
+                (let [[ _ prev ] prev-pair]
+                    (try-escape prev curr)))
+            [ :whatever (wrap-string "") ])
+         (map #(let [[curr _] %] curr))
+         (drop 2)))
+
+(defn to-string-wrappers
+    "Given a full string, splits it, wraps the splitted strings, and handles all escaping,
+    returning a seq of string-wrappers"
+    [string]
+    (->> string
+        (both-del-split)
+        (map wrap-string)
+        (escape-all)))

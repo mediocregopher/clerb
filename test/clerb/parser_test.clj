@@ -66,3 +66,21 @@
         (is (= (try-escape (wrap-string "test") (wrap-string "#(test)#"))
                [ { :type :raw :text "test" } { :type :normal :text "#(test)#" } ]))
         ))
+
+(deftest to-string-wrappers-test
+    (testing "to-string-wrappers"
+        (is (= (to-string-wrappers "test") (list (wrap-string "test"))))
+        (is (= (to-string-wrappers "test #(test)# test")
+                                   (list (wrap-string "test ")
+                                         (wrap-string "#(test)#")
+                                         (wrap-string " test"))))
+        (is (= (to-string-wrappers "test\\#(test)# test")
+                                   (list (wrap-string "test")
+                                         {:type :raw :text "#(test)#"}
+                                         (wrap-string " test"))))
+        (is (= (to-string-wrappers "test\\#(test)#\\#(test)# test")
+                                   (list (wrap-string "test")
+                                         {:type :raw :text "#(test)#"}
+                                         (wrap-string "")
+                                         {:type :raw :text "#(test)#"}
+                                         (wrap-string " test"))))))
