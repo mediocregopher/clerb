@@ -9,9 +9,9 @@ Usage
 Clerb can be used both as a standalone and as a library. The standalone takes in the name of a file whose
 filename ends in ```.clerb```, and outputs to a file with the same name sans the ```.clerb``` extension.
 
-The library can be included in your ```project.clj``` like usual, and included using ```(import 'clerb.core)```.
+The library can be included in your ```project.clj``` like usual, and included using ```(use 'clerb.core)```.
 There are two public methods: ```clerb-string/1```, which takes in a string, and ```clerb-file/1```, which takes
-in the name of a file as a string. Both output the string representation of the parsed clerb template that was passed
+in the name of a file as a string. Both return the string representation of the parsed clerb template that was passed
 in.
 
 Format
