@@ -53,7 +53,7 @@ Current Status/Limitations
 clerb is currently in a state of development. At the moment the two core functions are done... ish. They work for most
 cases. Cases where they don't work:
 
-* The template contains ```)#``` as part of it's text (for instance: ```#( print ")#" )#```). I'm not sure how this could be fixed, but I'm not very experienced with these things.
+* The template contains ```)#``` as part of it's text (for instance: ```#( print ")#" )#```. I'm not sure how this could be fixed, but I'm not very experienced with these things.
 
 In addition the actual stand-alone executable hasn't been set up yet. I'm still working on that part.
 
