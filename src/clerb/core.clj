@@ -1,4 +1,5 @@
 (ns clerb.core
+    (:gen-class :main true)
     (:require [clerb.executor :as e]
               [clerb.parser   :as p]))
 
@@ -16,3 +17,7 @@
     result. See README.md for details on how parsing works"
     [filename]
     (clerb-string (slurp filename)))
+
+(defn -main [& args]
+    (print (clerb-file (first args)))
+    (flush))
