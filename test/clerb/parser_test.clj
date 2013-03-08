@@ -39,6 +39,7 @@
         (is (= (-easy-subs "01234" -1 1) "4"))
         (is (= (-easy-subs "01234" -4 2) "12"))
         (is (= (-easy-subs "01234" -1 4) "4"))
+        (is (= (-easy-subs "" -1 1)      ""))
         ))
 
 (deftest string-type-test

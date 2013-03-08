@@ -33,7 +33,7 @@
     indices"
     [string beg len]
     (let [strcnt (count string)
-          start (if (neg? beg) (+ strcnt beg) beg)
+          start (if (neg? beg) (max (+ strcnt beg) 0) beg)
           endtmp (+ start len)
           end (if (> endtmp strcnt) strcnt endtmp)]
         (subs string start end)))

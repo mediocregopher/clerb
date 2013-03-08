@@ -19,7 +19,7 @@ blah
 lol
 ```
 
-The library can be included in your ```project.clj``` by adding ```[org.clojars.mediocregopher/clerb "0.1"]``` to your
+The library can be included in your ```project.clj``` by adding ```[org.clojars.mediocregopher/clerb "0.2"]``` to your
 dependencies, and included using ```(use 'clerb.core)```.
 
 There are two public methods: ```clerb-string/1```, which takes in a string, and ```clerb-file/1```, which takes

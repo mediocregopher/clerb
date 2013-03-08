@@ -1,4 +1,4 @@
-(defproject org.clojars.mediocregopher/clerb "0.1"
+(defproject org.clojars.mediocregopher/clerb "0.2"
   :description "It's like ERB, but in clojure!"
   :url "https://github.com/mediocregopher/clerb"
   :license {:name "Eclipse Public License"
