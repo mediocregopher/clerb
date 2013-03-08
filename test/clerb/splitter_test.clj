@@ -2,6 +2,14 @@
   (:use clojure.test
         clerb.splitter))
 
+(deftest split-to-vec-test
+  (testing "split-to-vec"
+    (is (= (split-to-vec "" "-")) [])
+    (is (= (split-to-vec "test-test-" "-") ["test" "-" "test" "-"]))
+    (is (= (split-to-vec "test--test--" "--") ["test" "--" "test" "--"]))
+    (is (= (split-to-vec "--test--test--" "--") ["" "--" "test" "--" "test" "--"]))
+    ))
+
 (deftest two-split-on-left-test
   (testing "two-split-on-left"
     (is (= (two-split-on-left "" "whatever")
@@ -18,6 +26,10 @@
            [ "test" "--test--test" ]))
     (is (= (two-split-on-left "test--test-test" "-")
            [ "test" "--test-test" ]))
+    (is (= (two-split-on-left "test--test--" "--")
+           [ "test" "--test--" ]))
+    (is (= (two-split-on-left "test--" "--")
+           [ "test" "--" ]))
     ))
 
 (deftest two-split-on-right-test
@@ -36,6 +48,10 @@
            [ "test--" "test--test" ]))
     (is (= (two-split-on-right "test--test-test" "-")
            [ "test-" "-test-test" ]))
+    (is (= (two-split-on-right "test--test--" "--")
+           [ "test--" "test--" ]))
+    (is (= (two-split-on-right "test--" "--")
+           [ "test--" "" ]))
     ))
 
 (deftest three-split-test
@@ -44,8 +60,8 @@
            [ "" "" "" ]))
     (is (= (three-split "test" "#(" ")#")
            [ "test" "" "" ]))
-    (is (= (three-split "test #(test)# test" "#(" ")#")
-           [ "test " "#(test)#" " test" ]))
+    (is (= (three-split "test #(test)#" "#(" ")#")
+           [ "test " "#(test)#" "" ]))
     (is (= (three-split "test #( #(test) )# test" "#(" ")#")
            [ "test " "#( #(test) )#" " test" ]))
     (is (= (three-split "test #(test test" "#(" ")#")

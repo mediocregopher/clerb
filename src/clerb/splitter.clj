@@ -1,5 +1,12 @@
 (ns clerb.splitter
+    (:import java.util.StringTokenizer)
     (:require [clojure.string :as s]))
+
+(defn split-to-vec
+    "Given a string and a substring splits the string into an array using the
+    substring as a delimiter. Returns occurences of the substring as well"
+    [string splitter]
+    (s/split string (re-pattern (str "(?=" splitter ")|(?<=" splitter ")"))))
 
 (defn two-split-on-left
     "Given a string and a substring, tries to split the string at the
@@ -9,20 +16,16 @@
     Ex. (two-split-on-left \"test-test\" \"-\") => [\"test\" \"-test\"]
         (two-split-on-left \"test-test-test\" \"-\") => [\"test\" \"-test-test\"]
         (two-split-on-left \"testtest\" \"-\") => [\"testtest\" \"\"]
-        
-    The behavior is a bit weird if the string ends in a splitter, but I'm lazy and
-    that's dumb"
+    "
     [string splitter]
     (let [ regex (-> splitter
                      (s/replace "(" "\\(")
-                     (s/replace ")" "\\)")
-                     (re-pattern))
-           split-vec (s/split string regex) ]
+                     (s/replace ")" "\\)"))
+           split-vec (split-to-vec string regex) ]
         (case (count split-vec)
             1 [(first split-vec) ""]
-            2 [(first split-vec) (str splitter (second split-vec))]
             [ (first split-vec)
-              (str splitter (reduce #(str %1 splitter %2) (rest split-vec))) ])))
+              (apply str (rest split-vec)) ])))
 
 (defn two-split-on-right
     "Given a string and a substring, tries to split the string at the
@@ -32,20 +35,16 @@
     Ex. (two-split-on-right \"test-test\" \"-\") => [\"test-\" \"test\"]
         (two-split-on-right \"test-test-test\" \"-\") => [\"test-\" \"test-test\"]
         (two-split-on-right \"testtest\" \"-\") => [\"testtest\" \"\"]
-        
-    The behavior is a bit weird if the string ends in a splitter, but I'm lazy and
-    that's dumb"
+    "
     [string splitter]
     (let [ regex (-> splitter
                      (s/replace "(" "\\(")
-                     (s/replace ")" "\\)")
-                     (re-pattern))
-           split-vec (s/split string regex) ]
+                     (s/replace ")" "\\)"))
+           split-vec (split-to-vec string regex) ]
         (case (count split-vec)
             1 [(first split-vec) ""]
-            2 [(str (first split-vec) splitter) (second split-vec)]
-            [ (str (first split-vec) splitter)
-              (reduce #(str %1 splitter %2) (rest split-vec)) ])))
+            [ (str (first split-vec) (second split-vec))
+              (apply str (drop 2 split-vec)) ])))
 
 (defn three-split
     "Given a string and two substrings, tries to split the string at the first
@@ -55,17 +54,8 @@
     point.
 
     Ex. (three-split \"test [test] test\" \"[\" \"]\") => [\"test \" \"[test]\" \" test\"]
-
-    The behavior is a bit weird if the string ends in a splitter, but I'm lazy and
-    that's dumb"
+    "
     [string starter ender]
     (let [[ pre mid-full ] (two-split-on-left string starter)
           [ mid post ]     (two-split-on-right mid-full ender) ]
         [pre mid post]))
-    
-
-;(defn clerb-string
-;    [to-process]
-;    (let [charseq (seq to-process)]
-;        (reduce (fn [ acc ch ]
-;            (let [ [ prev 
