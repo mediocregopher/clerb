@@ -50,7 +50,7 @@ This library does: #(print (some-library-method :foo :bar :baz))#
 
 ```
 
-You can use ```##( ... )##``` to implicitely wrap the contents in a ```print``` statement.
+You can use ```##( ... )##``` to implicitly wrap the contents in a ```print``` statement.
 
 ```
 1 + 2 = ##(+ 1 2)##
